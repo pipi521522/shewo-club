@@ -443,6 +443,89 @@ footer em{color:rgba(255,85,0,.3);font-style:normal}
   white-space:nowrap;
 }
 #copy-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* 功能切换按钮 */
+.func-tabs{display:flex;gap:.5rem;margin:0 0 1.2rem;flex-wrap:wrap;}
+.func-tab{background:rgba(255,255,255,.05);border:1px solid rgba(255,100,0,.22);border-radius:2rem;padding:.55rem 1.4rem;font-size:.82rem;color:var(--txt);cursor:pointer;transition:all .2s;}
+.func-tab:hover{background:rgba(255,100,0,.15);border-color:rgba(255,120,0,.4);}
+.func-tab.active{background:linear-gradient(90deg,rgba(255,72,0,.65),rgba(255,118,0,.45));border-color:rgba(255,100,0,.5);color:#fff;font-weight:600;box-shadow:0 4px 20px rgba(255,80,0,.25);}
+
+/* 排行页 */
+#rankView{display:none;}
+#rankView.active{display:block;}
+.rank-controls{display:flex;gap:.8rem;margin-bottom:1rem;flex-wrap:wrap;align-items:center;}
+.rank-table{width:100%;border-collapse:collapse;margin-top:.5rem;}
+.rank-table th{background:rgba(255,100,0,.15);color:#ffa030;padding:.7rem .5rem;font-size:.8rem;text-align:left;border-bottom:2px solid rgba(255,100,0,.3);}
+.rank-table td{padding:.6rem .5rem;border-bottom:1px solid rgba(255,255,255,.06);font-size:.82rem;}
+.rank-table tr:hover{background:rgba(255,100,0,.08);}
+.rank-rank{color:#ffc640;font-weight:700;min-width:40px;text-align:center;}
+.rank-name{color:#e8f2ff;}
+.rank-type{white-space:nowrap;}
+.rank-speed{color:#00c8ff;font-weight:600;}
+.rank-steering{color:#00ff88;}
+.rank-friction{color:#ff80ff;}
+.rank-actions{padding:.4rem;text-align:center;}
+.rank-add-btn{background:rgba(0,200,255,.15);border:1px solid rgba(0,200,255,.3);border-radius:1rem;padding:.3rem .8rem;font-size:.75rem;color:#00c8ff;cursor:pointer;transition:all .2s;}
+.rank-add-btn:hover{background:rgba(0,200,255,.3);}
+.rank-add-btn.added{background:rgba(0,255,136,.15);border-color:rgba(0,255,136,.3);color:#00ff88;}
+
+/* 对比页 */
+#compareView{display:none;}
+#compareView.active{display:block;}
+.compare-container{background:rgba(12,7,26,.8);border-radius:1.5rem;border:1px solid rgba(255,100,0,.15);padding:1.5rem;}
+.compare-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:.8rem;}
+.compare-title{color:#ffc640;font-weight:700;font-size:1.1rem;}
+.compare-actions{display:flex;gap:.6rem;}
+.compare-search{background:rgba(255,255,255,.05);border:1px solid rgba(255,85,0,.22);border-radius:2rem;padding:.45rem 1rem;font-size:.8rem;color:var(--txt);width:180px;}
+.compare-clear{background:rgba(255,60,60,.15);border:1px solid rgba(255,60,60,.3);border-radius:2rem;padding:.45rem 1rem;font-size:.8rem;color:#ff6060;cursor:pointer;transition:all .2s;}
+.compare-clear:hover{background:rgba(255,60,60,.3);}
+.compare-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;}
+.compare-car-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,100,0,.15);border-radius:1rem;padding:1rem;position:relative;transition:all .2s;}
+.compare-car-card:hover{border-color:rgba(255,100,0,.35);transform:translateY(-2px);}
+.compare-car-card .remove-car{position:absolute;top:.5rem;right:.5rem;background:rgba(255,60,60,.2);border:none;border-radius:50%;width:24px;height:24px;color:#ff6060;font-size:14px;cursor:pointer;line-height:24px;text-align:center;}
+.compare-car-img{width:100%;height:120px;object-fit:contain;margin-bottom:.5rem;}
+.compare-car-name{color:#ffc640;font-weight:600;font-size:.9rem;margin-bottom:.2rem;}
+.compare-car-type{color:rgba(200,180,150,.5);font-size:.75rem;margin-bottom:.8rem;}
+.compare-params{display:grid;grid-template-columns:1fr 1fr;gap:.4rem;}
+.compare-param{background:rgba(255,255,255,.03);border-radius:.5rem;padding:.4rem .6rem;}
+.compare-param-label{font-size:.7rem;color:rgba(180,150,120,.5);margin-bottom:.1rem;}
+.compare-param-value{font-size:.8rem;color:#00c8ff;font-weight:600;}
+.compare-empty{text-align:center;padding:3rem;color:rgba(180,150,120,.4);}
+.compare-empty-icon{font-size:2.5rem;display:block;margin-bottom:.8rem;}
+.compare-result{display:none;margin-top:1.5rem;background:rgba(12,7,26,.8);border-radius:1.5rem;border:1px solid rgba(255,100,0,.15);padding:1.5rem;}
+.compare-result.show{display:block;}
+.compare-result-title{color:#ffc640;font-weight:700;font-size:1rem;margin-bottom:.8rem;}
+.compare-result-text{color:rgba(200,180,150,.7);font-size:.85rem;line-height:1.8;}
+.compare-result-text b{color:#00c8ff;}
+
+/* 车辆选择弹窗 */
+#carSelectModal{position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;padding:2rem;}
+#carSelectModal.show{display:flex;}
+.car-select-wrap{background:rgba(12,7,26,.95);border:1px solid rgba(255,100,0,.2);border-radius:1.5rem;width:100%;max-width:600px;max-height:80vh;display:flex;flex-direction:column;}
+.car-select-header{display:flex;justify-content:space-between;align-items:center;padding:1rem 1.5rem;border-bottom:1px solid rgba(255,100,0,.1);}
+.car-select-title{color:#ffc640;font-weight:700;}
+.car-select-close{background:none;border:none;color:rgba(180,150,120,.5);font-size:1.5rem;cursor:pointer;}
+.car-select-body{padding:1rem 1.5rem;overflow-y:auto;flex:1;}
+.car-select-search{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,85,0,.22);border-radius:2rem;padding:.5rem 1rem;font-size:.85rem;color:var(--txt);margin-bottom:1rem;}
+.car-select-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:.8rem;}
+.car-select-item{background:rgba(255,255,255,.03);border:1px solid rgba(255,100,0,.1);border-radius:.8rem;padding:.8rem;cursor:pointer;transition:all .2s;text-align:center;}
+.car-select-item:hover{border-color:rgba(255,100,0,.35);background:rgba(255,100,0,.08);}
+.car-select-item img{width:100%;height:80px;object-fit:contain;margin-bottom:.4rem;}
+.car-select-item .item-name{font-size:.8rem;color:#ffc640;font-weight:500;}
+.car-select-item .item-type{font-size:.7rem;color:rgba(180,150,120,.4);}
+
+/* 排行榜统计 */
+.rank-stat{display:inline-block;background:rgba(255,100,0,.1);border:1px solid rgba(255,100,0,.15);border-radius:1rem;padding:.3rem .8rem;font-size:.78rem;color:#ffa030;margin-right:.5rem;}
+
+/* 响应式 */
+@media(max-width:768px){
+  .func-tabs{flex-wrap:wrap;}
+  .rank-table{font-size:.75rem;}
+  .rank-table th,.rank-table td{padding:.4rem .3rem;}
+  .compare-grid{grid-template-columns:1fr;}
+  .car-select-list{grid-template-columns:repeat(2,1fr);}
+}
+
 </style>
 
 <script>
@@ -646,6 +729,16 @@ if ('serviceWorker' in navigator) {
     <p class="sub">连胜之星版本 &nbsp;·&nbsp; ver21018 &nbsp;·&nbsp; 共 <b id="totalCount">…</b> 条数据</p>
   </div>
 
+  <!-- 功能切换按钮 -->
+  <div class="func-tabs" id="funcTabs">
+    <button class="func-tab active" data-view="gallery" onclick="switchView('gallery')">📷 图鉴</button>
+    <button class="func-tab" data-view="rank" onclick="switchView('rank')">🏆 排行</button>
+    <button class="func-tab" data-view="compare" onclick="switchView('compare')">⚔️ 对比</button>
+  </div>
+
+  <!-- 图鉴视图 -->
+  <div id="galleryView">
+
   <!-- Controls -->
   <div class="controls">
     <div class="search-group">
@@ -684,7 +777,83 @@ if ('serviceWorker' in navigator) {
   <div id="loading"><div class="spin"></div><br>正在加载数据，请稍候…</div>
   <div id="carsContainer" class="grid" style="display:none"></div>
   <div class="pagination" id="pagination"></div>
+  </div>
+
+  <!-- 排行视图 -->
+  <div id="rankView">
+    <div class="rank-controls">
+      <select id="rankSortBy" onchange="renderRank()" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,85,0,.22);border-radius:2rem;padding:.45rem 1rem;font-size:.8rem;color:var(--txt);">
+        <option value="speed">按平跑速度</option>
+        <option value="steering">按转向能力</option>
+        <option value="friction">按摩擦系数</option>
+        <option value="composite">综合评分</option>
+      </select>
+      <select id="rankFilter" onchange="renderRank()" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,85,0,.22);border-radius:2rem;padding:.45rem 1rem;font-size:.8rem;color:var(--txt);">
+        <option value="ALL">全部</option>
+        <option value="S">S级</option>
+        <option value="A">A级</option>
+        <option value="B">B级</option>
+      </select>
+      <input type="text" id="rankSearch" placeholder="搜索赛车名称..." oninput="renderRank()" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,85,0,.22);border-radius:2rem;padding:.45rem 1rem;font-size:.8rem;color:var(--txt);width:150px;">
+    </div>
+    <div id="rankStats" style="margin-bottom:1rem;"></div>
+    <div style="overflow-x:auto;">
+      <table class="rank-table">
+        <thead>
+          <tr>
+            <th>排名</th>
+            <th>赛车名称</th>
+            <th>等级</th>
+            <th>速度</th>
+            <th>转向</th>
+            <th>摩擦</th>
+            <th>综合</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody id="rankTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 对比视图 -->
+  <div id="compareView">
+    <div class="compare-container">
+      <div class="compare-header">
+        <div class="compare-title">⚔️ 赛车对比</div>
+        <div class="compare-actions">
+          <input type="text" id="compareSearchInput" class="compare-search" placeholder="搜索添加赛车..." oninput="showCarSelectModal('compare')">
+          <button class="compare-clear" onclick="clearCompare()">🗑️ 清空</button>
+        </div>
+      </div>
+      <div id="compareCarList" class="compare-grid"></div>
+      <div id="compareEmpty" class="compare-empty">
+        <span class="compare-empty-icon">⚔️</span>
+        <p>点击上方搜索框添加赛车进行对比</p>
+        <p style="margin-top:.5rem;font-size:.78rem;color:rgba(180,150,120,.3);">最多支持4辆赛车同时对比</p>
+      </div>
+    </div>
+    <div id="compareResult" class="compare-result">
+      <div class="compare-result-title">📊 对比结论</div>
+      <div class="compare-result-text" id="compareResultText"></div>
+    </div>
+  </div>
+
   <footer>© 蛇窝俱乐部 &nbsp;·&nbsp; <em>QQ飞车</em> 端游 &nbsp;·&nbsp; 连胜之星版本</footer>
+</div>
+
+<!-- 车辆选择弹窗 -->
+<div id="carSelectModal">
+  <div class="car-select-wrap">
+    <div class="car-select-header">
+      <div class="car-select-title">选择赛车</div>
+      <button class="car-select-close" onclick="closeCarSelectModal()">×</button>
+    </div>
+    <div class="car-select-body">
+      <input type="text" id="carSelectSearch" class="car-select-search" placeholder="输入赛车名称搜索..." oninput="filterCarSelect()">
+      <div id="carSelectList" class="car-select-list"></div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -999,6 +1168,263 @@ document.getElementById('categorySelect').addEventListener('change',e=>{
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.cat===currentCat));
   render();
 });
+
+/* ══ 功能视图切换 ══ */
+let currentView = 'gallery';
+let compareCars = [];
+let _carSelectCallback = null;
+
+function switchView(view) {
+  currentView = view;
+  document.querySelectorAll('.func-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.view === view);
+  });
+  document.getElementById('galleryView').style.display = view === 'gallery' ? '' : 'none';
+  document.getElementById('rankView').classList.toggle('active', view === 'rank');
+  document.getElementById('compareView').classList.toggle('active', view === 'compare');
+
+  if (view === 'rank') renderRank();
+  if (view === 'compare') renderCompareCars();
+}
+
+/* ══ 数据扩展字段解析 ══ */
+function parseExtendedFields(desc) {
+  if (!desc) return {};
+  const result = {};
+  const speedMatch = desc.match(/速度[:：](\d+\.?\d*)/);
+  if (speedMatch) result.speed = parseFloat(speedMatch[1]);
+  const steerMatch = desc.match(/转向[:：](\d+\.?\d*)\/(\d+\.?\d*)/);
+  if (steerMatch) {
+    result.steering_in = parseFloat(steerMatch[1]);
+    result.steering = parseFloat(steerMatch[2]);
+  }
+  const frictionMatch = desc.match(/摩擦[:：](\d+\.?\d*)/);
+  if (frictionMatch) result.friction = parseFloat(frictionMatch[1]);
+  const driftMatch = desc.match(/漂移[:：](\d+\.?\d*)/);
+  if (driftMatch) result.drift = parseFloat(driftMatch[1]);
+  return result;
+}
+
+/* ══ 排行功能 ══ */
+function calcCompositeScore(car) {
+  const speed = parseFloat(car.speed) || 0;
+  const steering = parseFloat(car.steering_in || car.steering || 0);
+  const friction = parseFloat(car.friction || 0);
+  return (speed * 0.5) + (steering * 10) + (friction * 5);
+}
+
+function renderRank() {
+  const sortBy = document.getElementById('rankSortBy').value;
+  const filter = document.getElementById('rankFilter').value;
+  const search = document.getElementById('rankSearch').value.toLowerCase();
+
+  let cars = ALL.filter(c => {
+    if (filter !== 'ALL' && !c.type.includes(filter + '级')) return false;
+    if (search && !c.name.toLowerCase().includes(search)) return false;
+    return c.speed > 0 || c.steering || (c.desc && c.desc.includes('速度'));
+  });
+
+  cars.forEach(car => {
+    if (!car.speed) {
+      const ext = parseExtendedFields(car.desc);
+      Object.assign(car, ext);
+    }
+  });
+
+  cars.sort((a, b) => {
+    if (sortBy === 'speed') return (b.speed || 0) - (a.speed || 0);
+    if (sortBy === 'steering') return (b.steering_in || 0) - (a.steering_in || 0);
+    if (sortBy === 'friction') return (b.friction || 0) - (a.friction || 0);
+    return calcCompositeScore(b) - calcCompositeScore(a);
+  });
+
+  cars = cars.slice(0, 100);
+
+  const tbody = document.getElementById('rankTableBody');
+  const stats = document.getElementById('rankStats');
+
+  stats.innerHTML = '<span class="rank-stat">共 ' + cars.length + ' 辆车</span>' +
+    '<span class="rank-stat">排序: ' + (sortBy === 'speed' ? '速度' : sortBy === 'steering' ? '转向' : sortBy === 'friction' ? '摩擦' : '综合') + '</span>';
+
+  tbody.innerHTML = cars.map((car, i) => {
+    const rank = i + 1;
+    const rankClass = rank <= 3 ? 'style="color:#ffc640;font-weight:900;font-size:1.1em;"' : '';
+    const speed = car.speed || '-';
+    const steering = car.steering_in || car.steering || '-';
+    const friction = car.friction || '-';
+    const composite = car.speed > 0 ? calcCompositeScore(car).toFixed(1) : '-';
+    const typeSlot = catSlot(car.type);
+    const typeColor = typeSlot === 's' ? '#ffc640' : typeSlot === 'a' ? '#ff7a20' : typeSlot === 'b' ? '#00c8ff' : '#aaa';
+    const isAdded = compareCars.some(c => c.id === car.id);
+
+    return '<tr>' +
+      '<td ' + rankClass + ' class="rank-rank">' + (rank <= 3 ? ['🥇','🥈','🥉'][rank-1] : rank) + '</td>' +
+      '<td class="rank-name">' + escH(car.name) + '</td>' +
+      '<td class="rank-type" style="color:' + typeColor + '">' + escH(car.type) + '</td>' +
+      '<td class="rank-speed">' + speed + '</td>' +
+      '<td class="rank-steering">' + steering + '</td>' +
+      '<td class="rank-friction">' + friction + '</td>' +
+      '<td style="color:#00ff88;font-weight:600">' + composite + '</td>' +
+      '<td class="rank-actions">' +
+        '<button class="rank-add-btn ' + (isAdded ? 'added' : '') + '" onclick="addToCompare(' + car.id + ')" ' + (isAdded ? 'disabled' : '') + '>' +
+          (isAdded ? '✓ 已添加' : '+ 对比') +
+        '</button>' +
+      '</td>' +
+    '</tr>';
+  }).join('');
+}
+
+/* ══ 对比功能 ══ */
+function showCarSelectModal(callback) {
+  _carSelectCallback = callback;
+  const modal = document.getElementById('carSelectModal');
+  modal.classList.add('show');
+  document.getElementById('carSelectSearch').value = '';
+  document.getElementById('carSelectSearch').focus();
+  renderCarSelectList(ALL.slice(0, 50));
+}
+
+function renderCarSelectList(cars) {
+  const list = document.getElementById('carSelectList');
+  list.innerHTML = cars.map(car => {
+    const imgUrl = 'https://iips.speed.qq.com/images/' + car.id + '.png';
+    return '<div class="car-select-item" onclick="selectCar(' + car.id + ')">' +
+      '<img src="' + imgUrl + '" alt="' + escH(car.name) + '" onerror="this.style.display=\'none\'">' +
+      '<div class="item-name">' + escH(car.name) + '</div>' +
+      '<div class="item-type">' + escH(car.type) + '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function filterCarSelect() {
+  const search = document.getElementById('carSelectSearch').value.toLowerCase();
+  const filtered = search ? ALL.filter(c => c.name.toLowerCase().includes(search)) : ALL.slice(0, 50);
+  renderCarSelectList(filtered);
+}
+
+function closeCarSelectModal() {
+  document.getElementById('carSelectModal').classList.remove('show');
+}
+
+function selectCar(id) {
+  if (_carSelectCallback === 'compare') {
+    addToCompare(id);
+  }
+  closeCarSelectModal();
+}
+
+function addToCompare(id) {
+  if (compareCars.length >= 4) {
+    showToast('⚠️ 最多只能对比4辆车');
+    return;
+  }
+  if (compareCars.some(c => c.id === id)) {
+    showToast('⚠️ 该车已在对比列表');
+    return;
+  }
+  const car = ALL.find(c => c.id === id);
+  if (car) {
+    if (!car.speed) {
+      const ext = parseExtendedFields(car.desc);
+      Object.assign(car, ext);
+    }
+    compareCars.push(car);
+    showToast('✓ 已添加 ' + car.name);
+    renderCompareCars();
+    if (currentView === 'rank') renderRank();
+  }
+}
+
+function removeFromCompare(id) {
+  compareCars = compareCars.filter(c => c.id !== id);
+  renderCompareCars();
+  if (currentView === 'rank') renderRank();
+}
+
+function clearCompare() {
+  compareCars = [];
+  renderCompareCars();
+  if (currentView === 'rank') renderRank();
+}
+
+function renderCompareCars() {
+  const list = document.getElementById('compareCarList');
+  const empty = document.getElementById('compareEmpty');
+  const result = document.getElementById('compareResult');
+
+  if (compareCars.length === 0) {
+    list.innerHTML = '';
+    empty.style.display = 'block';
+    result.classList.remove('show');
+    return;
+  }
+
+  empty.style.display = 'none';
+  list.style.gridTemplateColumns = 'repeat(' + Math.min(compareCars.length, 4) + ', 1fr)';
+
+  list.innerHTML = compareCars.map(car => {
+    const imgUrl = 'https://iips.speed.qq.com/images/' + car.id + '.png';
+    return '<div class="compare-car-card">' +
+      '<button class="remove-car" onclick="removeFromCompare(' + car.id + ')">×</button>' +
+      '<img class="compare-car-img" src="' + imgUrl + '" alt="' + escH(car.name) + '" onerror="this.style.display=\'none\'">' +
+      '<div class="compare-car-name">' + escH(car.name) + '</div>' +
+      '<div class="compare-car-type">' + escH(car.type) + '</div>' +
+      '<div class="compare-params">' +
+        '<div class="compare-param"><div class="compare-param-label">平跑速度</div><div class="compare-param-value">' + (car.speed || '-') + '</div></div>' +
+        '<div class="compare-param"><div class="compare-param-label">转向能力</div><div class="compare-param-value">' + (car.steering_in || car.steering || '-') + '</div></div>' +
+        '<div class="compare-param"><div class="compare-param-label">摩擦系数</div><div class="compare-param-value">' + (car.friction || '-') + '</div></div>' +
+        '<div class="compare-param"><div class="compare-param-label">漂移速率</div><div class="compare-param-value">' + (car.drift || '1.0') + '</div></div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+
+  if (compareCars.length >= 2) {
+    generateCompareResult();
+    result.classList.add('show');
+  } else {
+    result.classList.remove('show');
+  }
+}
+
+function generateCompareResult() {
+  const resultText = document.getElementById('compareResultText');
+  let html = '';
+
+  const speeds = compareCars.map(c => ({ name: c.name, val: parseFloat(c.speed) || 0 })).sort((a, b) => b.val - a.val);
+  const steerings = compareCars.map(c => ({ name: c.name, val: parseFloat(c.steering_in || c.steering) || 0 })).sort((a, b) => b.val - a.val);
+  const frictions = compareCars.map(c => ({ name: c.name, val: parseFloat(c.friction) || 0 })).sort((a, b) => b.val - a.val);
+  const composites = compareCars.map(c => ({ name: c.name, val: calcCompositeScore(c) })).sort((a, b) => b.val - a.val);
+
+  if (speeds[0].val > 0) html += '<p>🏎️ <b>速度最快</b>: ' + speeds[0].name + ' (' + speeds[0].val + ')</p>';
+  if (steerings[0].val > 0) html += '<p>🔄 <b>转向最强</b>: ' + steerings[0].name + ' (' + steerings[0].val + ')</p>';
+  if (frictions[0].val > 0) html += '<p>🛞 <b>抓地最好</b>: ' + frictions[0].name + ' (' + frictions[0].val + ')</p>';
+  if (composites[0].val > 0) html += '<p>⭐ <b>综合最强</b>: ' + composites[0].name + ' (' + composites[0].val.toFixed(1) + ')</p>';
+
+  resultText.innerHTML = html;
+}
+
+/* ══ 键盘快捷键 ══ */
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeCarSelectModal();
+  if (e.ctrlKey && ['1', '2', '3'].includes(e.key)) {
+    e.preventDefault();
+    const views = ['gallery', 'rank', 'compare'];
+    switchView(views[parseInt(e.key) - 1]);
+  }
+});
+
+/* ══ 解析扩展数据（在parseCSV完成后执行） ══ */
+const _orig_parseCSV = parseCSV;
+parseCSV = async function(text, el) {
+  await _orig_parseCSV(text, el);
+  // 解析扩展数据
+  ALL.forEach(car => {
+    const ext = parseExtendedFields(car.desc);
+    Object.assign(car, ext);
+  });
+  console.log('[xblack] 数据加载完成，扩展参数已解析，共 ' + ALL.length + ' 条');
+};
+
 window.addEventListener('load',init);
 </script>
 <script src="xblack_data.js"></script>
