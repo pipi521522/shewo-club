@@ -520,6 +520,27 @@ footer em{color:rgba(255,85,0,.3);font-style:normal}
 
 /* 排行榜统计 */
 .rank-stat{display:inline-block;background:rgba(255,100,0,.1);border:1px solid rgba(255,100,0,.15);border-radius:1rem;padding:.3rem .8rem;font-size:.78rem;color:#ffa030;margin-right:.5rem;}
+/* 雷达图 */
+.compare-radar{background:rgba(12,7,26,.8);border-radius:1.5rem;border:1px solid rgba(255,100,0,.15);padding:1.5rem;margin-top:1.5rem;text-align:center;}
+.compare-radar-title{color:#ffc640;font-weight:700;font-size:1rem;margin-bottom:.8rem;}
+#radarCanvas{background:rgba(255,255,255,.02);border-radius:1rem;max-width:100%;}
+/* 详细参数对比表 */
+.compare-detail{background:rgba(12,7,26,.8);border-radius:1.5rem;border:1px solid rgba(255,100,0,.15);padding:1.5rem;margin-top:1.5rem;}
+.compare-detail-title{color:#ffc640;font-weight:700;font-size:1rem;margin-bottom:.8rem;}
+.compare-detail-table-wrap{overflow-x:auto;}
+.compare-detail-table{width:100%;border-collapse:collapse;font-size:.82rem;}
+.compare-detail-table th{background:rgba(255,100,0,.12);color:#ffa030;padding:.5rem .6rem;font-weight:600;border-bottom:1px solid rgba(255,100,0,.2);white-space:nowrap;}
+.compare-detail-table td{padding:.45rem .6rem;border-bottom:1px solid rgba(255,255,255,.05);color:#e8d5ff;}
+.compare-detail-table tr:hover td{background:rgba(255,100,0,.05);}
+.compare-param-label{color:rgba(180,150,120,.7);font-size:.78rem;}
+.compare-val-best{color:#00ff88;font-weight:700;}
+.compare-val-worst{color:#ff6060;}
+.compare-val-normal{color:#00c8ff;}
+/* 排行维度切换 */
+.rank-tabs{display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap;}
+.rank-tab{padding:.4rem 1rem;border-radius:2rem;font-size:.78rem;cursor:pointer;border:1px solid rgba(255,85,0,.22);color:var(--txt);background:rgba(255,255,255,.03);transition:all .2s;}
+.rank-tab:hover{border-color:rgba(255,85,0,.45);}
+.rank-tab.active{background:rgba(255,100,0,.2);border-color:rgba(255,100,0,.6);color:#ffc640;}
 
 /* 响应式 */
 @media(max-width:768px){
@@ -785,18 +806,43 @@ if ('serviceWorker' in navigator) {
 
   <!-- 排行视图 -->
   <div id="rankView">
+    <div class="rank-tabs">
+      <button class="rank-tab active" data-rank="composite" onclick="switchRankTab('composite')">⭐ 综合榜</button>
+      <button class="rank-tab" data-rank="flat_speed_0" onclick="switchRankTab('flat_speed_0')">🏎️ 极速榜</button>
+      <button class="rank-tab" data-rank="nitro_speed_0" onclick="switchRankTab('nitro_speed_0')">💨 氮气榜</button>
+      <button class="rank-tab" data-rank="max_steering" onclick="switchRankTab('max_steering')">🔄 转向榜</button>
+      <button class="rank-tab" data-rank="friction" onclick="switchRankTab('friction')">🛞 抓地榜</button>
+      <button class="rank-tab" data-rank="drift" onclick="switchRankTab('drift')">⚡ 漂移榜</button>
+      <button class="rank-tab" data-rank="score_composite" onclick="switchRankTab('score_composite')">🎯 玩家评分</button>
+      <button class="rank-tab" data-rank="score_value" onclick="switchRankTab('score_value')">💰 性价比</button>
+    </div>
     <div class="rank-controls">
       <select id="rankSortBy" onchange="renderRank()">
-        <option value="speed">按平跑速度</option>
-        <option value="steering">按转向能力</option>
-        <option value="friction">按摩擦系数</option>
-        <option value="composite">综合评分</option>
+        <option value="composite">⭐ 综合评分</option>
+        <option value="flat_speed_0">🏎️ 平跑极速</option>
+        <option value="nitro_speed_0">💨 氮气极速</option>
+        <option value="max_steering">🔄 最大转向</option>
+        <option value="friction">🛞 摩擦系数</option>
+        <option value="drift">⚡ 漂移速率</option>
+        <option value="boost_250_0">🚀 加速性能</option>
+        <option value="acc_180_0">⚡ 提速排行</option>
+        <option value="score_composite">🎯 玩家综合</option>
+        <option value="score_value">💰 性价比</option>
+        <option value="score_handling">👐 手感评分</option>
+        <option value="score_combat">⚔️ 对抗评分</option>
       </select>
       <select id="rankFilter" onchange="renderRank()">
-        <option value="ALL">全部</option>
+        <option value="ALL">全部等级</option>
         <option value="S">S级</option>
         <option value="A">A级</option>
         <option value="B">B级</option>
+        <option value="C">C级</option>
+        <option value="D">D级</option>
+        <option value="T">T级</option>
+        <option value="M">M级</option>
+        <option value="L">L级</option>
+        <option value="R">R级</option>
+        <option value="skin">皮肤版</option>
       </select>
       <input type="text" id="rankSearch" placeholder="搜索赛车名称..." oninput="renderRank()" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,85,0,.22);border-radius:2rem;padding:.45rem 1rem;font-size:.8rem;color:var(--txt);width:150px;">
     </div>
@@ -805,13 +851,15 @@ if ('serviceWorker' in navigator) {
       <table class="rank-table">
         <thead>
           <tr>
-            <th>排名</th>
+            <th>#</th>
             <th>赛车名称</th>
             <th>等级</th>
-            <th>速度</th>
+            <th>极速</th>
+            <th>氮气</th>
             <th>转向</th>
             <th>摩擦</th>
-            <th>综合</th>
+            <th>漂移</th>
+            <th>玩家评分</th>
             <th>操作</th>
           </tr>
         </thead>
@@ -840,6 +888,20 @@ if ('serviceWorker' in navigator) {
     <div id="compareResult" class="compare-result">
       <div class="compare-result-title">📊 对比结论</div>
       <div class="compare-result-text" id="compareResultText"></div>
+    </div>
+
+    <!-- 雷达图 -->
+    <div id="compareRadar" class="compare-radar" style="display:none;">
+      <div class="compare-radar-title">🎯 雷达图对比</div>
+      <canvas id="radarCanvas" width="400" height="400"></canvas>
+    </div>
+
+    <!-- 详细参数对比表 -->
+    <div id="compareDetail" class="compare-detail" style="display:none;">
+      <div class="compare-detail-title">📋 详细参数对比</div>
+      <div class="compare-detail-table-wrap">
+        <table class="compare-detail-table" id="compareDetailTable"></table>
+      </div>
     </div>
   </div>
 
@@ -1223,52 +1285,95 @@ function renderRank() {
   const search = document.getElementById('rankSearch').value.toLowerCase();
 
   let cars = ALL.filter(c => {
-    if (filter !== 'ALL' && !c.type.includes(filter + '级')) return false;
+    // 过滤条件
+    const lv = c.level || c.type || '';
+    if (filter === 'S' && !lv.includes('S级') && !lv.includes('S【')) return false;
+    if (filter === 'A' && !lv.includes('A级') && !lv.includes('A【')) return false;
+    if (filter === 'B' && !lv.includes('B级')) return false;
+    if (filter === 'C' && !lv.includes('C级')) return false;
+    if (filter === 'D' && !lv.includes('D级')) return false;
+    if (filter === 'T' && !lv.match(/T[123]级/)) return false;
+    if (filter === 'M' && !lv.match(/M[123]级/)) return false;
+    if (filter === 'L' && !lv.match(/L[0123]级/)) return false;
+    if (filter === 'R' && !lv.includes('R级')) return false;
+    if (filter === 'skin' && !lv.includes('【皮肤】')) return false;
+    // 搜索
     if (search && !c.name.toLowerCase().includes(search)) return false;
-    return c.speed > 0 || c.steering || (c.desc && c.desc.includes('速度'));
+    // 必须有扩展数据
+    const extData = window.EXT_DATA && window.EXT_DATA[c.id];
+    return extData && (extData.flat_speed_0 > 0 || extData.score_composite > 0);
   });
 
+  // 合并扩展数据
   cars.forEach(car => {
-    if (!car.speed) {
-      const ext = parseExtendedFields(car.desc);
-      Object.assign(car, ext);
-    }
+    const ext = window.EXT_DATA && window.EXT_DATA[car.id] || {};
+    car._ext = ext;
+    if (!car.level && ext.level) car.level = ext.level;
   });
 
+  // 排序
   cars.sort((a, b) => {
-    if (sortBy === 'speed') return (b.speed || 0) - (a.speed || 0);
-    if (sortBy === 'steering') return (b.steering_in || 0) - (a.steering_in || 0);
-    if (sortBy === 'friction') return (b.friction || 0) - (a.friction || 0);
-    return calcCompositeScore(b) - calcCompositeScore(a);
+    const extA = a._ext || {};
+    const extB = b._ext || {};
+    const sortKeys = {
+      composite: () => calcCompositeScore(extB) - calcCompositeScore(extA),
+      flat_speed_0: () => (extB.flat_speed_0 || 0) - (extA.flat_speed_0 || 0),
+      nitro_speed_0: () => (extB.nitro_speed_0 || 0) - (extA.nitro_speed_0 || 0),
+      max_steering: () => (extB.max_steering || 0) - (extA.max_steering || 0),
+      friction: () => (extB.friction || 0) - (extA.friction || 0),
+      drift: () => (extB.drift || 0) - (extA.drift || 0),
+      boost_250_0: () => (extB.boost_250_0 || 999) - (extA.boost_250_0 || 999), // 小=好
+      acc_180_0: () => (extB.acc_180_0 || 999) - (extA.acc_180_0 || 999), // 小=好
+      score_composite: () => (extB.score_composite || 0) - (extA.score_composite || 0),
+      score_value: () => (extB.score_value || 0) - (extA.score_value || 0),
+      score_handling: () => (extB.score_handling || 0) - (extA.score_handling || 0),
+      score_combat: () => (extB.score_combat || 0) - (extA.score_combat || 0),
+    };
+    const fn = sortKeys[sortBy];
+    return fn ? fn() : 0;
   });
 
   cars = cars.slice(0, 100);
 
   const tbody = document.getElementById('rankTableBody');
   const stats = document.getElementById('rankStats');
-
-  stats.innerHTML = '<span class="rank-stat">共 ' + cars.length + ' 辆车</span>' +
-    '<span class="rank-stat">排序: ' + (sortBy === 'speed' ? '速度' : sortBy === 'steering' ? '转向' : sortBy === 'friction' ? '摩擦' : '综合') + '</span>';
+  const sortLabels = {
+    composite: '综合', flat_speed_0: '平跑极速', nitro_speed_0: '氮气极速',
+    max_steering: '转向', friction: '摩擦', drift: '漂移',
+    boost_250_0: '加速', acc_180_0: '提速',
+    score_composite: '玩家评分', score_value: '性价比',
+    score_handling: '手感', score_combat: '对抗'
+  };
+  stats.innerHTML = '<span class="rank-stat">🏎️ 共 ' + cars.length + ' 辆</span>' +
+    '<span class="rank-stat">📊 排序: ' + (sortLabels[sortBy] || sortBy) + '</span>';
 
   tbody.innerHTML = cars.map((car, i) => {
+    const ext = car._ext || {};
     const rank = i + 1;
-    const rankClass = rank <= 3 ? 'style="color:#ffc640;font-weight:900;font-size:1.1em;"' : '';
-    const speed = car.speed || '-';
-    const steering = car.steering_in || car.steering || '-';
-    const friction = car.friction || '-';
-    const composite = car.speed > 0 ? calcCompositeScore(car).toFixed(1) : '-';
-    const typeSlot = catSlot(car.type);
-    const typeColor = typeSlot === 's' ? '#ffc640' : typeSlot === 'a' ? '#ff7a20' : typeSlot === 'b' ? '#00c8ff' : '#aaa';
+    const rankClass = rank <= 3 ? 'style="color:#ffc640;font-weight:900;"' : '';
+    const flatSpeed = ext.flat_speed_0 ? ext.flat_speed_0.toFixed(1) : '-';
+    const nitroSpeed = ext.nitro_speed_0 ? ext.nitro_speed_0.toFixed(1) : '-';
+    const maxSteer = ext.max_steering ? ext.max_steering.toFixed(2) : '-';
+    const friction = ext.friction ? ext.friction.toFixed(1) : '-';
+    const drift = ext.drift ? ext.drift.toFixed(2) : '-';
+    const composite = calcCompositeScore(ext);
+    const score = ext.score_composite ? ext.score_composite.toFixed(1) + '/10' : '-';
+    const level = ext.level || car.type || '-';
+    const levelColor = level.includes('S级') || level.includes('S【') ? '#ffc640' :
+                       level.includes('A级') || level.includes('A【') ? '#ff7a20' :
+                       level.includes('B级') ? '#00c8ff' : '#aaa';
     const isAdded = compareCars.some(c => c.id === car.id);
 
     return '<tr>' +
       '<td ' + rankClass + ' class="rank-rank">' + (rank <= 3 ? ['🥇','🥈','🥉'][rank-1] : rank) + '</td>' +
-      '<td class="rank-name">' + escH(car.name) + '</td>' +
-      '<td class="rank-type" style="color:' + typeColor + '">' + escH(car.type) + '</td>' +
-      '<td class="rank-speed">' + speed + '</td>' +
-      '<td class="rank-steering">' + steering + '</td>' +
+      '<td class="rank-name" title="' + escH(car.name) + '">' + escH(car.name) + '</td>' +
+      '<td class="rank-type" style="color:' + levelColor + '">' + escH(level) + '</td>' +
+      '<td class="rank-speed">' + flatSpeed + '</td>' +
+      '<td style="color:#ff7a20">' + nitroSpeed + '</td>' +
+      '<td class="rank-steering">' + maxSteer + '</td>' +
       '<td class="rank-friction">' + friction + '</td>' +
-      '<td style="color:#00ff88;font-weight:600">' + composite + '</td>' +
+      '<td style="color:#ff6bff">' + drift + '</td>' +
+      '<td style="color:#00ff88;font-weight:600">' + score + '</td>' +
       '<td class="rank-actions">' +
         '<button class="rank-add-btn ' + (isAdded ? 'added' : '') + '" onclick="addToCompare(' + car.id + ')" ' + (isAdded ? 'disabled' : '') + '>' +
           (isAdded ? '✓ 已添加' : '+ 对比') +
@@ -1276,6 +1381,29 @@ function renderRank() {
       '</td>' +
     '</tr>';
   }).join('');
+}
+
+/* ══ 排行榜快捷标签切换 ══ */
+function switchRankTab(type) {
+  document.querySelectorAll('.rank-tab').forEach(t => t.classList.remove('active'));
+  document.querySelector('.rank-tab[data-rank="' + type + '"]').classList.add('active');
+  const select = document.getElementById('rankSortBy');
+  select.value = type;
+  renderRank();
+}
+
+/* ══ 扩展数据综合评分计算 ══ */
+function calcCompositeScore(ext) {
+  if (!ext) return 0;
+  const speed = parseFloat(ext.flat_speed_0) || 0;
+  const steering = parseFloat(ext.max_steering) || 0;
+  const friction = parseFloat(ext.friction) || 0;
+  const drift = parseFloat(ext.drift) || 0;
+  const playerScore = parseFloat(ext.score_composite) || 0;
+  // 综合评分 = 速度(归一化) + 转向 + 摩擦 + 漂移 + 玩家评分权重
+  const speedNorm = speed > 0 ? ((speed - 190) / 40) * 10 : 0; // 190-230 -> 0-10
+  const steerNorm = steering > 0 ? ((steering - 7.5) / 1.5) * 5 : 0; // 7.5-9 -> 0-5
+  return Math.max(0, speedNorm + steerNorm + friction * 2 + drift * 5 + playerScore * 0.5);
 }
 
 /* ══ 对比功能 ══ */
@@ -1292,17 +1420,22 @@ function renderCarSelectList(cars) {
   const list = document.getElementById('carSelectList');
   list.innerHTML = cars.map(car => {
     const imgUrl = 'https://iips.speed.qq.com/images/' + car.id + '.png';
+    const ext = window.EXT_DATA && window.EXT_DATA[car.id] || {};
+    const level = ext.level || car.type || '';
+    const score = ext.score_composite ? '⭐' + ext.score_composite.toFixed(1) : '';
     return '<div class="car-select-item" onclick="selectCar(' + car.id + ')">' +
       '<img src="' + imgUrl + '" alt="' + escH(car.name) + '" onerror="this.style.display=\'none\'">' +
       '<div class="item-name">' + escH(car.name) + '</div>' +
-      '<div class="item-type">' + escH(car.type) + '</div>' +
+      '<div class="item-type">' + (level ? escH(level) + (score ? ' ' + score : '') : escH(car.type)) + '</div>' +
     '</div>';
   }).join('');
 }
 
 function filterCarSelect() {
   const search = document.getElementById('carSelectSearch').value.toLowerCase();
-  const filtered = search ? ALL.filter(c => c.name.toLowerCase().includes(search)) : ALL.slice(0, 50);
+  const hasExt = c => window.EXT_DATA && window.EXT_DATA[c.id] && (window.EXT_DATA[c.id].flat_speed_0 > 0 || window.EXT_DATA[c.id].score_composite > 0);
+  let base = ALL.filter(c => hasExt(c));
+  const filtered = search ? base.filter(c => c.name.toLowerCase().includes(search)) : base.slice(0, 50);
   renderCarSelectList(filtered);
 }
 
@@ -1328,10 +1461,10 @@ function addToCompare(id) {
   }
   const car = ALL.find(c => c.id === id);
   if (car) {
-    if (!car.speed) {
-      const ext = parseExtendedFields(car.desc);
-      Object.assign(car, ext);
-    }
+    // 合并扩展数据
+    const ext = window.EXT_DATA && window.EXT_DATA[id] || {};
+    Object.assign(car, ext);
+    if (!car.level && ext.level) car.level = ext.level;
     compareCars.push(car);
     showToast('✓ 已添加 ' + car.name);
     renderCompareCars();
@@ -1384,8 +1517,12 @@ function renderCompareCars() {
 
   if (compareCars.length >= 2) {
     generateCompareResult();
+    drawRadarChart();
+    renderCompareDetail();
     result.classList.add('show');
   } else {
+    document.getElementById('compareRadar').style.display = 'none';
+    document.getElementById('compareDetail').style.display = 'none';
     result.classList.remove('show');
   }
 }
@@ -1394,17 +1531,193 @@ function generateCompareResult() {
   const resultText = document.getElementById('compareResultText');
   let html = '';
 
-  const speeds = compareCars.map(c => ({ name: c.name, val: parseFloat(c.speed) || 0 })).sort((a, b) => b.val - a.val);
-  const steerings = compareCars.map(c => ({ name: c.name, val: parseFloat(c.steering_in || c.steering) || 0 })).sort((a, b) => b.val - a.val);
-  const frictions = compareCars.map(c => ({ name: c.name, val: parseFloat(c.friction) || 0 })).sort((a, b) => b.val - a.val);
-  const composites = compareCars.map(c => ({ name: c.name, val: calcCompositeScore(c) })).sort((a, b) => b.val - a.val);
+  const getExt = c => c._ext || c;
+  const speeds = compareCars.map(c => ({ name: c.name, val: parseFloat(getExt(c).flat_speed_0) || 0 })).sort((a, b) => b.val - a.val);
+  const nitroSpeeds = compareCars.map(c => ({ name: c.name, val: parseFloat(getExt(c).nitro_speed_0) || 0 })).sort((a, b) => b.val - a.val);
+  const steerings = compareCars.map(c => ({ name: c.name, val: parseFloat(getExt(c).max_steering) || 0 })).sort((a, b) => b.val - a.val);
+  const frictions = compareCars.map(c => ({ name: c.name, val: parseFloat(getExt(c).friction || 0) })).sort((a, b) => b.val - a.val);
+  const drifts = compareCars.map(c => ({ name: c.name, val: parseFloat(getExt(c).drift || 0) })).sort((a, b) => b.val - a.val);
+  const composites = compareCars.map(c => ({ name: c.name, val: calcCompositeScore(getExt(c)) })).sort((a, b) => b.val - a.val);
 
-  if (speeds[0].val > 0) html += '<p>🏎️ <b>速度最快</b>: ' + speeds[0].name + ' (' + speeds[0].val + ')</p>';
-  if (steerings[0].val > 0) html += '<p>🔄 <b>转向最强</b>: ' + steerings[0].name + ' (' + steerings[0].val + ')</p>';
-  if (frictions[0].val > 0) html += '<p>🛞 <b>抓地最好</b>: ' + frictions[0].name + ' (' + frictions[0].val + ')</p>';
+  if (speeds[0].val > 0) html += '<p>🏎️ <b>速度最快</b>: ' + speeds[0].name + ' (' + speeds[0].val.toFixed(2) + ')</p>';
+  if (nitroSpeeds[0].val > 0) html += '<p>💨 <b>氮气最强</b>: ' + nitroSpeeds[0].name + ' (' + nitroSpeeds[0].val.toFixed(2) + ')</p>';
+  if (steerings[0].val > 0) html += '<p>🔄 <b>转向最强</b>: ' + steerings[0].name + ' (' + steerings[0].val.toFixed(4) + ')</p>';
+  if (frictions[0].val > 0) html += '<p>🛞 <b>抓地最好</b>: ' + frictions[0].name + ' (' + frictions[0].val.toFixed(2) + ')</p>';
+  if (drifts[0].val > 0) html += '<p>⚡ <b>漂移最强</b>: ' + drifts[0].name + ' (' + drifts[0].val.toFixed(2) + ')</p>';
   if (composites[0].val > 0) html += '<p>⭐ <b>综合最强</b>: ' + composites[0].name + ' (' + composites[0].val.toFixed(1) + ')</p>';
 
   resultText.innerHTML = html;
+}
+
+/* ══ 雷达图对比 ══ */
+function drawRadarChart() {
+  const radarDiv = document.getElementById('compareRadar');
+  const canvas = document.getElementById('radarCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width = 380;
+  const H = canvas.height = 380;
+  ctx.clearRect(0, 0, W, H);
+
+  if (compareCars.length < 2) { radarDiv.style.display = 'none'; return; }
+  radarDiv.style.display = 'block';
+
+  const cx = W / 2, cy = H / 2;
+  const R = Math.min(W, H) * 0.35;
+
+  // 雷达维度：极速、转向、漂移、摩擦、综合评分
+  const axes = [
+    { label: '极速', key: 'flat_speed_0', max: 250 },
+    { label: '氮气极速', key: 'nitro_speed_0', max: 320 },
+    { label: '转向', key: 'max_steering', max: 9 },
+    { label: '摩擦', key: 'friction', max: 4 },
+    { label: '漂移', key: 'drift', max: 1.5 },
+  ];
+  const N = axes.length;
+  const colors = ['#ff6b35', '#00c8ff', '#00ff88', '#ffc640', '#ff6bff', '#ff4040'];
+  const angleStep = (Math.PI * 2) / N;
+
+  // 画背景网格
+  for (let ring = 1; ring <= 4; ring++) {
+    const r = (ring / 4) * R;
+    ctx.beginPath();
+    for (let i = 0; i <= N; i++) {
+      const angle = i * angleStep - Math.PI / 2;
+      const x = cx + r * Math.cos(angle);
+      const y = cy + r * Math.sin(angle);
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.strokeStyle = 'rgba(255,100,0,.1)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  }
+
+  // 画轴线
+  for (let i = 0; i < N; i++) {
+    const angle = i * angleStep - Math.PI / 2;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(cx + R * Math.cos(angle), cy + R * Math.sin(angle));
+    ctx.strokeStyle = 'rgba(255,100,0,.2)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    // 轴标签
+    const lx = cx + (R + 24) * Math.cos(angle);
+    const ly = cy + (R + 24) * Math.sin(angle);
+    ctx.fillStyle = 'rgba(200,180,150,.7)';
+    ctx.font = '11px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(axes[i].label, lx, ly);
+  }
+
+  // 画每辆车的数据
+  compareCars.forEach((car, ci) => {
+    ctx.beginPath();
+    let hasAny = false;
+    for (let i = 0; i < N; i++) {
+      const raw = parseFloat(car[axes[i].key]) || 0;
+      const ratio = Math.min(raw / axes[i].max, 1);
+      const angle = i * angleStep - Math.PI / 2;
+      const x = cx + R * ratio * Math.cos(angle);
+      const y = cy + R * ratio * Math.sin(angle);
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      if (raw > 0) hasAny = true;
+    }
+    ctx.closePath();
+    ctx.fillStyle = colors[ci % colors.length] + '33';
+    ctx.strokeStyle = colors[ci % colors.length];
+    ctx.lineWidth = 2;
+    ctx.fill();
+    ctx.stroke();
+  });
+
+  // 图例
+  const legendY = H - 18;
+  compareCars.forEach((car, ci) => {
+    const lx = cx - (compareCars.length - 1) * 60 + ci * 120;
+    ctx.fillStyle = colors[ci % colors.length];
+    ctx.fillRect(lx - 8, legendY - 6, 14, 10);
+    ctx.fillStyle = '#e8d5ff';
+    ctx.font = '11px sans-serif';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(car.name.length > 12 ? car.name.substring(0, 11) + '…' : car.name, lx + 10, legendY - 1);
+  });
+}
+
+/* ══ 详细参数对比表 ══ */
+function renderCompareDetail() {
+  const detailDiv = document.getElementById('compareDetail');
+  const table = document.getElementById('compareDetailTable');
+  if (!table) return;
+
+  if (compareCars.length < 2) { detailDiv.style.display = 'none'; return; }
+  detailDiv.style.display = 'block';
+
+  const params = [
+    { label: '等级', key: 'level', fmt: v => v || '-' },
+    { label: '车重', key: 'weight', fmt: v => v || '-' },
+    { label: '宝石槽', key: 'gem_slots', fmt: v => v || '-' },
+    { label: '极速(0推进)', key: 'flat_speed_0', fmt: v => v ? v.toFixed(2) : '-' },
+    { label: '极速(40推进)', key: 'flat_speed_40', fmt: v => v ? v.toFixed(2) : '-' },
+    { label: '氮气极速(0)', key: 'nitro_speed_0', fmt: v => v ? v.toFixed(2) : '-' },
+    { label: '氮气极速(40)', key: 'nitro_speed_40', fmt: v => v ? v.toFixed(2) : '-' },
+    { label: '平跑180提速(0)', key: 'acc_180_0', fmt: v => v ? v.toFixed(2) + 's' : '-' },
+    { label: '平跑180提速(40)', key: 'acc_180_40', fmt: v => v ? v.toFixed(2) + 's' : '-' },
+    { label: '大喷250提速(0)', key: 'boost_250_0', fmt: v => v ? v.toFixed(2) + 's' : '-' },
+    { label: '大喷290提速(0)', key: 'boost_290_0', fmt: v => v ? v.toFixed(2) + 's' : '-' },
+    { label: '最大转向', key: 'max_steering', fmt: v => v ? v.toFixed(4) : '-' },
+    { label: '最小转向', key: 'min_steering', fmt: v => v ? v.toFixed(4) : '-' },
+    { label: '漂移速率', key: 'drift', fmt: v => v ? v.toFixed(2) : '-' },
+    { label: '摩擦系数', key: 'friction', fmt: v => v ? v.toFixed(2) : '-' },
+    { label: '漂移转向', key: 'drift_steering', fmt: v => v ? v.toFixed(1) : '-' },
+    { label: '漂移摆动', key: 'drift_swing', fmt: v => v ? v.toFixed(1) : '-' },
+    { label: '漂移回正', key: 'drift_correction', fmt: v => v ? v.toFixed(1) : '-' },
+    { label: '满改燃料时长', key: 'fuel_duration', fmt: v => v ? v.toFixed(2) : '-' },
+    { label: '满改燃料强度', key: 'fuel_strength', fmt: v => v ? v.toFixed(2) : '-' },
+    { label: '满改进气系数', key: 'full_intake_pct', fmt: v => v ? v + '%' : '-' },
+    { label: '综合评分', key: 'score_composite', fmt: v => v ? v.toFixed(1) + '/10' : '-' },
+    { label: '速度评分', key: 'score_speed', fmt: v => v ? v.toFixed(1) : '-' },
+    { label: '手感评分', key: 'score_handling', fmt: v => v ? v.toFixed(1) : '-' },
+    { label: '颜值评分', key: 'score_appearance', fmt: v => v ? v.toFixed(1) : '-' },
+    { label: '对抗评分', key: 'score_combat', fmt: v => v ? v.toFixed(1) : '-' },
+    { label: '性价比评分', key: 'score_value', fmt: v => v ? v.toFixed(1) : '-' },
+  ];
+
+  // 构建表头
+  let html = '<thead><tr><th>参数</th>';
+  compareCars.forEach(c => { html += '<th>' + escH(c.name) + '</th>'; });
+  html += '</tr></thead><tbody>';
+
+  params.forEach(p => {
+    const vals = compareCars.map(c => {
+      const raw = c[p.key] !== undefined ? c[p.key] : null;
+      return raw;
+    });
+    const numVals = vals.filter(v => v !== null && v !== undefined && v !== '' && !isNaN(v));
+    const allSame = numVals.length > 1 && numVals.every(v => v === numVals[0]);
+    const best = numVals.length > 0 ? Math.max(...numVals) : null;
+    const worst = numVals.length > 0 ? Math.min(...numVals) : null;
+
+    html += '<tr><td class="compare-param-label">' + p.label + '</td>';
+    vals.forEach(v => {
+      if (v === null || v === undefined || v === '') {
+        html += '<td class="compare-val-normal">-</td>';
+      } else {
+        const isBest = numVals.length > 1 && v === best;
+        const isWorst = numVals.length > 1 && v === worst;
+        let cls = 'compare-val-normal';
+        if (isBest) cls = 'compare-val-best';
+        if (isWorst) cls = 'compare-val-worst';
+        html += '<td class="' + cls + '">' + p.fmt(v) + '</td>';
+      }
+    });
+    html += '</tr>';
+  });
+
+  html += '</tbody>';
+  table.innerHTML = html;
 }
 
 /* ══ 键盘快捷键 ══ */
@@ -1432,5 +1745,6 @@ parseCSV = async function(text, el) {
 window.addEventListener('load',init);
 </script>
 <script src="xblack_data.js"></script>
+<script src="ext_data.js"></script>
 </body>
 </html>
