@@ -454,6 +454,10 @@ footer em{color:rgba(255,85,0,.3);font-style:normal}
 #rankView{display:none;}
 #rankView.active{display:block;}
 .rank-controls{display:flex;gap:.8rem;margin-bottom:1rem;flex-wrap:wrap;align-items:center;}
+.rank-controls select{background:#1a0e35;border:1px solid rgba(255,85,0,.35);border-radius:2rem;padding:.45rem 1rem;font-size:.8rem;color:#e8d5ff;cursor:pointer;transition:border-color .2s,box-shadow .2s;appearance:auto;}
+.rank-controls select:focus{outline:none;border-color:rgba(255,105,0,.7);box-shadow:0 0 0 3px rgba(255,85,0,.15);}
+.rank-controls select option{background:#1a0e35;color:#e8d5ff;}
+.rank-controls select option:checked,.rank-controls select option:hover{background:#3d1a6e;color:#ffc640;}
 .rank-table{width:100%;border-collapse:collapse;margin-top:.5rem;}
 .rank-table th{background:rgba(255,100,0,.15);color:#ffa030;padding:.7rem .5rem;font-size:.8rem;text-align:left;border-bottom:2px solid rgba(255,100,0,.3);}
 .rank-table td{padding:.6rem .5rem;border-bottom:1px solid rgba(255,255,255,.06);font-size:.82rem;}
@@ -782,13 +786,13 @@ if ('serviceWorker' in navigator) {
   <!-- 排行视图 -->
   <div id="rankView">
     <div class="rank-controls">
-      <select id="rankSortBy" onchange="renderRank()" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,85,0,.22);border-radius:2rem;padding:.45rem 1rem;font-size:.8rem;color:var(--txt);">
+      <select id="rankSortBy" onchange="renderRank()">
         <option value="speed">按平跑速度</option>
         <option value="steering">按转向能力</option>
         <option value="friction">按摩擦系数</option>
         <option value="composite">综合评分</option>
       </select>
-      <select id="rankFilter" onchange="renderRank()" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,85,0,.22);border-radius:2rem;padding:.45rem 1rem;font-size:.8rem;color:var(--txt);">
+      <select id="rankFilter" onchange="renderRank()">
         <option value="ALL">全部</option>
         <option value="S">S级</option>
         <option value="A">A级</option>
